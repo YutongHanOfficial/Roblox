@@ -40,6 +40,12 @@
             font-weight: bold;
             color: #00ff96;
         }
+        .percentage {
+            margin-top: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffcc00;
+        }
     </style>
 </head>
 <body>
@@ -48,6 +54,7 @@
         <input type="number" id="currentRAP" placeholder="Current RAP">
         <input type="number" id="sellPrice" placeholder="Sell Price">
         <div class="result" id="newRAP">New RAP: --</div>
+        <div class="percentage" id="rapChange">Change: --%</div>
     </div>
 
     <script>
@@ -55,7 +62,9 @@
             let currentRAP = parseFloat(document.getElementById("currentRAP").value) || 0;
             let sellPrice = parseFloat(document.getElementById("sellPrice").value) || 0;
             let newRAP = currentRAP * 0.9 + sellPrice * 0.1;
+            let changePercent = currentRAP ? ((newRAP - currentRAP) / currentRAP * 100).toFixed(2) : 0;
             document.getElementById("newRAP").innerText = "New RAP: " + newRAP.toFixed(2);
+            document.getElementById("rapChange").innerText = "Change: " + changePercent + "%";
         }
 
         document.getElementById("currentRAP").addEventListener("input", calculateNewRAP);
