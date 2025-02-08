@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox RAP Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 255, 150, 0.5);
+            text-align: center;
+            width: 300px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            background: #2a2a2a;
+            color: white;
+        }
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ff96;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>RAP Calculator</h2>
+        <input type="number" id="currentRAP" placeholder="Current RAP">
+        <input type="number" id="sellPrice" placeholder="Sell Price">
+        <div class="result" id="newRAP">New RAP: --</div>
+    </div>
+
+    <script>
+        function calculateNewRAP() {
+            let currentRAP = parseFloat(document.getElementById("currentRAP").value) || 0;
+            let sellPrice = parseFloat(document.getElementById("sellPrice").value) || 0;
+            let newRAP = currentRAP * 0.9 + sellPrice * 0.1;
+            document.getElementById("newRAP").innerText = "New RAP: " + newRAP.toFixed(2);
+        }
+
+        document.getElementById("currentRAP").addEventListener("input", calculateNewRAP);
+        document.getElementById("sellPrice").addEventListener("input", calculateNewRAP);
+    </script>
+</body>
+</html>
