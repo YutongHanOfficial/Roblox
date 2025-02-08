@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robux to USD Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 255, 150, 0.5);
+            text-align: center;
+            width: 300px;
+        }
+        input, select {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            background: #2a2a2a;
+            color: white;
+        }
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ff96;
+        }
+        .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .toggle-buttons button {
+            background: #00ff96;
+            color: black;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .toggle-buttons button.active {
+            background: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Robux to USD Converter</h2>
+        <div class="toggle-buttons">
+            <button id="toggleRobux" class="active" onclick="toggleMode('robux')">Robux to USD</button>
+            <button id="toggleUSD" onclick="toggleMode('usd')">USD to Robux</button>
+        </div>
+        <input type="number" id="inputValue" placeholder="Enter Value" oninput="convert()">
+        <select id="purchaseCategory" style="display: none;" onchange="convert()">
+            <option value="4.99">$4.99 - 400 Robux (500 w/ Premium)</option>
+            <option value="9.99">$9.99 - 800 Robux (1000 w/ Premium)</option>
+            <option value="19.99">$19.99 - 1700 Robux (2000 w/ Premium)</option>
+            <option value="49.99">$49.99 - 4500 Robux (5250 w/ Premium)</option>
+            <option value="99.99">$99.99 - 10000 Robux (11000 w/ Premium)</option>
+            <option value="199.99">$199.99 - 22500 Robux (24000 w/ Premium)</option>
+        </select>
+        <div class="result" id="devexResult">DevEx: --</div>
+    </div>
+
+    <script>
+        const devexRate = 0.0035; // 1 Robux = $0.0035 via DevEx
+        const purchaseCategories = {
+            4.99: { robux: 400, premium: 500 },
+            9.99: { robux: 800, premium: 1000 },
+            19.99: { robux: 1700, premium: 2000 },
+            49.99: { robux: 4500, premium: 5250 },
+            99.99: { robux: 10000, premium: 11000 },
+            199.99: { robux: 22500, premium: 24000 }
+        };
+        let mode = 'robux';
+
+        function toggleMode(selectedMode) {
+            mode = selectedMode;
+            document.getElementById("toggleRobux").classList.toggle("active", mode === 'robux');
+            document.getElementById("toggleUSD").classList.toggle("active", mode === 'usd');
+            document.getElementById("purchaseCategory").style.display = mode === 'usd' ? 'block' : 'none';
+            convert();
+        }
+
+        function convert() {
+            let inputValue = parseFloat(document.getElementById("inputValue").value) || 0;
+            let selectedCategory = parseFloat(document.getElementById("purchaseCategory").value);
+
+            if (mode === 'robux') {
+                let usdDevEx = (inputValue * devexRate).toFixed(2);
+                document.getElementById("devexResult").innerText = `DevEx: $${usdDevEx}`;
+            } else {
+                let baseRate = purchaseCategories[selectedCategory]?.robux / selectedCategory;
+                let premiumRate = purchaseCategories[selectedCategory]?.premium / selectedCategory;
+                if (baseRate && premiumRate) {
+                    let robuxAmount = Math.floor(inputValue * baseRate);
+                    let premiumRobuxAmount = Math.floor(inputValue * premiumRate);
+                    document.getElementById("devexResult").innerText = `You Get: ${robuxAmount} Robux (${premiumRobuxAmount} w/ Premium)`;
+                } else {
+                    document.getElementById("devexResult").innerText = "Enter a valid amount";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
